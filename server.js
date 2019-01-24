@@ -16,8 +16,8 @@ const userSchema = new Schema({
 
 userSchema.methods.manify = function(next) {
 	this.name = this.name + '-boy';
-
-    return next(null, this.name);
+	
+	return next(null, this.name);
 };
 
 userSchema.pre('save', function(next) {
@@ -87,15 +87,15 @@ const findSpecificRecord = function() {
 
 const updadeUserPassword = function() {
 	return User.findOne({ username: 'Kenny_the_boy' });
-        	.then(function(user) {
-			console.log('Old password is ' + user.password);
-            		console.log('Name ' + user.name);
+        .then(function(user) {
+		console.log('Old password is ' + user.password);
+        	console.log('Name ' + user.name);
             
-			user.password = 'newPassword';
-            		console.log('New password is ' + user.password);
+		user.password = 'newPassword';
+            	console.log('New password is ' + user.password);
             		
-			return user.save(function(err) {
-				if (err) throw err;
+		return user.save(function(err) {
+			if (err) throw err;
 
                 	console.log('Uzytkownik ' + user.name + ' zostal pomyslnie zaktualizowany');
             	});
