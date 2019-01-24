@@ -2,16 +2,16 @@ const mongoose = require('mongoose');
 const express = require('express');
 
 const Schema = mongoose.Schema;
-const app = express()
+const app = express();
 const PORT = process.env.PORT || 5000;
 
 const userSchema = new Schema({
 	name: String,
-    username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    admin: Boolean,
-    created_at: Date,
-    updated_at: Date
+	username: { type: String, required: true, unique: true },
+    	password: { type: String, required: true },
+    	admin: Boolean,
+    	created_at: Date,
+    	updated_at: Date
 });
 
 userSchema.methods.manify = function(next) {
@@ -23,118 +23,126 @@ userSchema.methods.manify = function(next) {
 userSchema.pre('save', function(next) {
 	const currentDate = new Date();
 
-    this.updated_at = currentDate;
+    	this.updated_at = currentDate;
 
 	if (!this.created_at)
 		this.created_at = currentDate;
-
-    next();
+	
+	next();
 });
 
 const User = mongoose.model('User', userSchema);
 
 const kenny = new User({
 	name: 'Kenny',
-    username: 'Kenny_the_boy',
-    password: 'password'
+    	username: 'Kenny_the_boy',
+    	password: 'password'
 });
 
 kenny.manify(function(err, name) {
 	if (err) throw err;
-    console.log('Twoje nowe imię to: ' + name);
+    	
+	console.log('Twoje nowe imię to: ' + name);
 });
 
 const benny = new User({
 	name: 'Benny',
-    username: 'Benny_the_boy',
-    password: 'password'
+    	username: 'Benny_the_boy',
+    	password: 'password'
 });
 
 benny.manify(function(err, name) {
-    if (err) throw err;
-    console.log('Twoje nowe imię to: ' + name);
+    	if (err) throw err;
+    
+	console.log('Twoje nowe imię to: ' + name);
 });
 
 const mark = new User({
-    name: 'Mark',
-    username: 'Mark_the_boy',
-    password: 'password'
+	name: 'Mark',
+    	username: 'Mark_the_boy',
+    	password: 'password'
 });
 
 mark.manify(function(err, name) {
-    if (err) throw err;
-    console.log('Twoje nowe imię to: ' + name);
+    	if (err) throw err;
+    	
+	console.log('Twoje nowe imię to: ' + name);
 });
 
 const findAllUsers = function() {
-    return User.find({}, function(err, res) {
+    	return User.find({}, function(err, res) {
 		if (err) throw err;
-        console.log('Actual database records are ' + res);
-    });
-}
+        	
+		console.log('Actual database records are ' + res);
+    	});
+};
 
 const findSpecificRecord = function() {
-    return User.find({ username: 'Kenny_the_boy' }, function(err, res) {
-        if (err) throw err;
-        console.log('Record you are looking for is ' + res);
-    })
-}
+    	return User.find({ username: 'Kenny_the_boy' }, function(err, res) {
+	    	if (err) throw err;
+	    	
+		console.log('Record you are looking for is ' + res);
+    	});
+};
 
 const updadeUserPassword = function() {
-    return User.findOne({ username: 'Kenny_the_boy' })
-        .then(function(user) {
+	return User.findOne({ username: 'Kenny_the_boy' });
+        	.then(function(user) {
 			console.log('Old password is ' + user.password);
-            console.log('Name ' + user.name);
-            user.password = 'newPassword';
-            console.log('New password is ' + user.password);
-            return user.save(function(err) {
+            		console.log('Name ' + user.name);
+            
+			user.password = 'newPassword';
+            		console.log('New password is ' + user.password);
+            		
+			return user.save(function(err) {
 				if (err) throw err;
 
-                console.log('Uzytkownik ' + user.name + ' zostal pomyslnie zaktualizowany');
-            })
-        })
-}
+                	console.log('Uzytkownik ' + user.name + ' zostal pomyslnie zaktualizowany');
+            	});
+        });
+};
 
 const updateUsername = function() {
-	return User.findOne({ username: 'Benny_the_boy' })
+	return User.findOne({ username: 'Benny_the_boy' });
         .then(function(user) {
-			console.log('Old username is ' + user.username);
-            user.username = 'Benny_the_man';
-            console.log('New username is ' + user.username);
-            return user.save(function(err) {
-				if (err) throw err;
+		console.log('Old username is ' + user.username);
+            	
+		user.username = 'Benny_the_man';
+            	console.log('New username is ' + user.username);
+            	return user.save(function(err) {
+			if (err) throw err;
 
-                console.log('Uzytkownik ' + user.username + ' zostal pomyslnie zaktualizowany');
-            })
-        })
-}
+                	console.log('Uzytkownik ' + user.username + ' zostal pomyslnie zaktualizowany');
+            	});
+        });
+};
 
 const findMarkAndDelete = function() {
-    return User.findOne({ username: 'Mark_the_boy' })
+	return User.findOne({ username: 'Mark_the_boy' });
         .then(function(user) {
-            return user.remove(function() {
-                console.log('User successfully deleted');
-            });
-        })
-}
+        	return user.remove(function() {
+                	console.log('User successfully deleted');
+            	});
+        });
+};
 
 const findKennyAndDelete = function() {
-    return User.findOne({ username: 'Kenny_the_boy' })
+	return User.findOne({ username: 'Kenny_the_boy' });
         .then(function(user) {
-            return user.remove(function() {
-                console.log('User successfully deleted');
-            });
-        });
-}
+        	return user.remove(function() {
+                	console.log('User successfully deleted');
+            	});
+       	});
+};
 
 const findBennyAndRemove = function() {
-    return User.findOneAndRemove({ username: 'Benny_the_man' })
+	return User.findOneAndRemove({ username: 'Benny_the_man' });
         .then(function(user) {
-            return user.remove(function() {
-                console.log('User successfully deleted');
-            });
+        	return user.remove(function() {
+				console.log('User successfully deleted');
+            	});
         });
-}
+};
 
 app.get('/', (req, res) => res.send('App Running'));
 app.listen(PORT, () => console.log('Success!'));
